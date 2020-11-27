@@ -53,12 +53,14 @@ remove_reprepro(){
     echo "deb $INPUT_URL_REPO $INPUT_DIST $POOL" > /etc/apt/sources.list.d/$INPUT_DIST.list
     apt update
     " > add-repo.sh
-    apindex . || echo 'erro'
+    sudo apindex .
     # Criando algumas pastas e publicando
-    mkdir -p /public
+    sudo mkdir -p /public
+    sudo chown $USER:$GROUP /public
+    sudo chmod 777 /public
     mkdir -p $WORKDIR_SH23/public
-    cp -rf /aptly/public/* /public
-    cp -rf /aptly/public/* $WORKDIR_SH23/public
+    cp -rfv /aptly/public/* /public
+    cp -rfv /aptly/public/* $WORKDIR_SH23/public
 }
 
 echo "Por qualquer problema nos informe pela issue no seguinte link: https://github.com/Sirherobrine23/APT-Pages-Docke/issues"
