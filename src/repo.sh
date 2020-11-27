@@ -81,8 +81,9 @@ if [ $INPUT_DEBUG == 'true' ];then
 fi
 # Pacotes
 if [ -d package ];then
+ mkdir -p /aptly/package || exit 130
  echo "Copying the folders"
- cp -rfv $PWD/package /aptly/package || echo 'We had an error copying the folders';exit 130
+ cp -rfv ./package/* /aptly/package/ || echo 'We had an error copying the folders';exit 130
 else
    echo "not found folder"
    exit 130
