@@ -81,7 +81,7 @@ if [ $INPUT_DEBUG == 'true' ];then
 fi
 # Pacotes
 if [ -d package ];then
- mkdir -p /aptly/package || echo 'Erro to create packages folder in aptly';exit 25
+ mkdir -p /aptly/package || sudo mkdir -p /aptly/package;chown $USER:$GROUP /aptly/package;chmod 777 /aptly/package
  echo "Copying the folders"
  cp -rfv ./package/* /aptly/package/ || echo 'We had an error copying the folders';exit 130
 else

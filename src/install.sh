@@ -16,4 +16,6 @@ chown $USER:$GROUP /aptly
 chown 777 /aptly
 chown $USER:$GROUP /aptly/*
 chown 777 /aptly/*
+ls -la /aptly
+ls -la /aptly/*
 exit 0
