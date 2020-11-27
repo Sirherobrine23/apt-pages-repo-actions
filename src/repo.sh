@@ -40,27 +40,29 @@ rm -rf ~/.aptly.conf
 ln -s /aptly/aptly.conf ~/.aptly.conf
 
 # ------------------------------------------------------
-    echo "Pasta do gpg: $gpg_folder"
-    mkdir -p "$gpg_folder"
-    chown -R $(whoami) "$gpg_folder/"
-    chown -R $(whoami) "$gpg_folder"
-    chmod 600 "$gpg_folder/*"
-    chmod 700 "$gpg_folder"
-    echo "---------------------------------------"
+    if [ -d $gpg_folder ];then
+     echo "Pasta do gpg: $gpg_folder"
+     mkdir -p "$gpg_folder"
+     chown -R $(whoami) "$gpg_folder/"
+     chown -R $(whoami) "$gpg_folder"
+     chmod 600 "$gpg_folder/*"
+     chmod 700 "$gpg_folder"
+     echo "---------------------------------------"
+    fi
     echo "default-key $INPUT_KEY_ID" >> $gpg_folder/gpg.conf
     echo use-agent >> $gpg_folder/gpg.conf
     echo "pinentry-mode loopback" >> $gpg_folder/gpg.conf
     echo "allow-loopback-pinentry" >> $gpg_folder/gpg-agent.conf
-    echo "UPDATESTARTUPTTY" | gpg-connect-agent &> /dev/null
-    echo "RELOADAGENT" | gpg-connect-agent &> /dev/null
-    gpg -v --passphrase "$INPUT_PASS" --no-tty --batch --yes --import <(cat "keys/$INPUT_PRIV_KEY") &> /dev/null
-    gpg -v --import <(cat "keys/$INPUT_PUB_KEY") &> /dev/null
+    echo "UPDATESTARTUPTTY" | gpg-connect-agent
+    echo "RELOADAGENT" | gpg-connect-agent
+    gpg -v --passphrase "$INPUT_PASS" --no-tty --batch --yes --import <(cat "keys/$INPUT_PRIV_KEY")
+    gpg -v --import <(cat "keys/$INPUT_PUB_KEY")
     echo "Gpg inport key sucess"
     statusONE='1'
 # ------------------------------------------------------
 if [ $statusONE == '1' ];then
  cd /aptly/
-     for as in $(ls /aptly/package/)
+     for as in /aptly/package*/*
      do
          aptly repo create -distribution=$INPUT_DIST -component=$as $as
          aptly repo add  $as /aptly/package/$as/*.deb
@@ -83,7 +85,12 @@ else
 fi
 # ------------------------------------------------------
 if [ $statusTWO == '1' ];then
- cd /aptly/public/
+  if [ -d /aptly/public/ ];then
+   cd /aptly/public/
+  else
+   echo 'Erro'
+   exit 2
+  fi
     # Key
     gpg --armor --output /aptly/public/Release.gpg --export $INPUT_KEY_ID
 
