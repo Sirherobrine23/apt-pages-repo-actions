@@ -6,6 +6,11 @@ wget https://github.com/aptly-dev/aptly/releases/download/v1.4.0/aptly_1.4.0_amd
 sudo dpkg -i /tmp/aptly.deb
 sudo -rfv /tmp/aptly.deb
 
+git clone https://github.com/Sirherobrine23/Index-pages.git /tmp/index
+cd /tmp/index
+cmake . -DCMAKE_INSTALL_PREFIX=/usr
+sudo make install
+
 sudo mkdir -p /aptly
 chown $USER:$GROUP /aptly
 chown 777 /aptly
