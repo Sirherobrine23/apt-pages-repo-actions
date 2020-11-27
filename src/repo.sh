@@ -1,4 +1,16 @@
 #!/bin/bash
+if [ $INPUT_DEBUG == 'true' ];then
+ echo 'Find'
+ ls $PWD/package
+fi
+# Pacotes
+if [ -d package ];then
+ echo "linkando os pacotes"
+ cp -rfv $PWD/package /aptly/package
+else
+   echo "not found folder"
+   exit 130
+fi
 echo "Por qualquer problema nos informe pela issue no seguinte link: https://github.com/Sirherobrine23/APT-Pages-Docke/issues"
 echo "E Também uma copia do Log"
 
@@ -12,24 +24,7 @@ echo "Opção atual do debug é: $INPUT_DEBUG"
 echo "Seu arquivo de chave publica é: $INPUT_PUB_KEY"
 echo "Seu arquivo de chave privada é: $INPUT_PRIV_KEY"
 echo "Sua id da chave publica e privada é: $INPUT_KEY_ID"
-echo "-------------------------------------------------------"
-
-if [ $INPUT_DEBUG == 'true' ];then
- echo 'Find'
- ls $PWD/package
-fi
-
-# Pacotes
-if [ -d package ];then
- echo "linkando os pacotes"
- cp -rfv $PWD/package /aptly/package
-else
-   echo "not found folder"
-   exit 130
-fi
-
-
-
+echo "----------------------------------------------------"
 # Confirações
 if [ -e $INPUT_CONF_FILE ];then
     cp -f $INPUT_CONF_FILE /aptly/aptly.conf
