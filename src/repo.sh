@@ -94,6 +94,7 @@ if [ $statusTWO == '1' ];then
     echo "deb $INPUT_URL_REPO $INPUT_DIST $POOL" > /etc/apt/sources.list.d/$INPUT_DIST.list
     apt update" > add-repo.sh
     sudo apindex .
+    echo "$INPUT_URL_REPO" > CNAME
 else
  echo "Tivemos algun erro no reprepro ou não foi executado normamente, por favor verifique suas confiurações ou deixe uma issue no https://github.com/Sirherobrine23/APT-Pages-Docke/issues"
  exit 127
