@@ -1,0 +1,30 @@
+name: Test file (Required to fail or complete successfully)
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build
+    steps:
+    - name: Checkout
+      uses: actions/checkout@main
+
+    - name: Execples Packages
+      run: |
+        mkdir -p package/not-bysh23/
+        mkdir -p keys
+        wget https://github.com/Sirherobrine23/APT_bysh23/raw/master/package/not-bysh23/qemu-user-static_5.1%2Bdfsg-4_i386.deb -O package/not-bysh23/qemu-user-static_5.1%2Bdfsg-4_i386.deb
+        wget https://github.com/Sirherobrine23/APT_bysh23/raw/master/keys/priv.key -O keys/priv.key
+        wget https://github.com/Sirherobrine23/APT_bysh23/raw/master/keys/pub.key -O keys/pub.key
+
+    - uses: Sirherobrine23/apt-pages-repo-actions@main
+      with:
+        KEY_ID: '908144B521689A950CCB5E801347937B188623BC'
+        URL_REPO: 'https://sirherobrine23.github.io/apt-pages-repo-actions'
+    
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3.7.0-8
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: /public/
+        cname: "${{ github.repository_owner }}.github.io/${{ github.repository }}"

@@ -1,0 +1,52 @@
+name: "Build Openwrt Image in Github CI With Javascript"
+author: "Sirherobrine23"
+description: "Create Snapshot images in Github Actions"
+inputs:
+  DIST:
+    description: 'Name type main'
+    required: false
+    default: 'pages'
+
+  DEBUG:
+    description: 'Show some more content, default is false'
+    required: false
+    default: 'false'
+
+  PUB_KEY:
+    description: 'Public key file'
+    required: false
+    default: 'pub.key'
+
+  PRIV_KEY:
+    description: 'Private key file'
+    required: false
+    default: 'priv.key'
+
+  KEY_ID:
+    description: 'Id da chave (GPG)'
+    required: true
+    default:  ''
+
+  CONF_FILE:
+    description: 'aptly config file'
+    required: false
+    default: 'aptly.conf'
+
+  URL_REPO: 
+    description: 'Pages URL'
+    required: true
+    default: "https://${{ github.repository_owner }}.github.io/${{ github.repository }}"
+
+  PASS:
+    description: 'GPG key password'
+    required: false
+    default: "${{ secrets.PASSWORD }}"
+
+runs:
+  using: 'node12'
+  pre: 'setup.js'
+  main: 'create_repo.js'
+
+branding:
+  icon: 'code'
+  color: 'gray-dark'
