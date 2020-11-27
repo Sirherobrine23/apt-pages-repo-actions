@@ -14,6 +14,11 @@ echo "Seu arquivo de chave privada é: $INPUT_PRIV_KEY"
 echo "Sua id da chave publica e privada é: $INPUT_KEY_ID"
 echo "-------------------------------------------------------"
 
+if [ $INPUT_DEBUG == 'true' ];then
+ echo 'Find'
+ find ./ | grep -v '.git'
+fi
+
 # Pacotes
 if [ -d package ];then
    if [ -e package/*/*.deb ];then
@@ -28,9 +33,7 @@ else
    exit 130
 fi
 
-if [ $INPUT_DEBUG == 'true' ];then
- find ./ | grep -v '.git'
-fi
+
 
 # Confirações
 if [ -e $INPUT_CONF_FILE ];then
