@@ -22,7 +22,7 @@ fi
 # Pacotes
 if [ -d package ];then
  echo "linkando os pacotes"
- ln -s $PWD/package /aptly/package
+ cp -rfv $PWD/package /aptly/package
 else
    echo "not found folder"
    exit 130
