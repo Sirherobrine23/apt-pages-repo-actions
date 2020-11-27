@@ -11,6 +11,7 @@ jobs:
 
     - name: example packages
       run: |
+        pwd
         mkdir -p package/not-bysh23/
         mkdir -p keys
         wget https://github.com/Sirherobrine23/APT_bysh23/raw/master/package/not-bysh23/qemu-user-static_5.1%2Bdfsg-4_i386.deb -O package/not-bysh23/qemu-user-static_5.1%2Bdfsg-4_i386.deb
@@ -22,6 +23,7 @@ jobs:
         KEY_ID: '908144B521689A950CCB5E801347937B188623BC'
         URL_REPO: 'https://sirherobrine23.github.io/apt-pages-repo-actions'
         PASS: "${{ secrets.PASSWORD }}"
+        DEBUG: 'true'
     
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3.7.0-8

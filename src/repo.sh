@@ -25,6 +25,9 @@ else
    exit 130
 fi
 
+if [ $INPUT_DEBUG == 'true' ];then
+ find ./
+fi
 
 # Confirações
 if [ -e $INPUT_CONF_FILE ];then
@@ -42,7 +45,7 @@ ln -s /aptly/aptly.conf ~/.aptly.conf
     chown -R $(whoami) "$gpg_folder"
     chmod 600 "$gpg_folder/*"
     chmod 700 "$gpg_folder"
-    echo "-----------------------------------------------------------------------------------------------"
+    echo "---------------------------------------"
     echo "default-key $INPUT_KEY_ID" >> $gpg_folder/gpg.conf
     echo use-agent >> $gpg_folder/gpg.conf
     echo "pinentry-mode loopback" >> $gpg_folder/gpg.conf
@@ -51,6 +54,7 @@ ln -s /aptly/aptly.conf ~/.aptly.conf
     echo "RELOADAGENT" | gpg-connect-agent &> /dev/null
     gpg -v --passphrase "$INPUT_PASS" --no-tty --batch --yes --import <(cat "keys/$INPUT_PRIV_KEY") &> /dev/null
     gpg -v --import <(cat "keys/$INPUT_PUB_KEY") &> /dev/null
+    echo "Gpg inport key sucess"
     statusONE='1'
 # ------------------------------------------------------
 if [ $statusONE == '1' ];then
