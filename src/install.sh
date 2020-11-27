@@ -11,11 +11,5 @@ cd /tmp/index
 cmake . -DCMAKE_INSTALL_PREFIX=/usr
 sudo make install
 
-sudo mkdir -p /aptly
-chown $USER:$GROUP /aptly
-chown 777 /aptly
-chown $USER:$GROUP /aptly/*
-chown 777 /aptly/*
-ls -la /aptly
-ls -la /aptly/*
+mkdir aptly
 exit 0
