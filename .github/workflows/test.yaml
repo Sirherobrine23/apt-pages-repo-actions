@@ -8,15 +8,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@main
-
-    - name: example packages
-      run: |
-        pwd
-        mkdir -p package/not-bysh23/
-        mkdir -p keys
-        wget https://github.com/Sirherobrine23/APT_bysh23/raw/master/package/not-bysh23/qemu-user-static_5.1%2Bdfsg-4_i386.deb -O package/not-bysh23/qemu-user-static_5.1%2Bdfsg-4_i386.deb
-        wget https://github.com/Sirherobrine23/APT_bysh23/raw/master/keys/priv.key -O keys/priv.key
-        wget https://github.com/Sirherobrine23/APT_bysh23/raw/master/keys/pub.key -O keys/pub.key
+      with:
+        repository: "Sirherobrine23/APT_bysh23"
 
     - uses: Sirherobrine23/apt-pages-repo-actions@main
       with:
