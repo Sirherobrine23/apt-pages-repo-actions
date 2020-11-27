@@ -39,8 +39,8 @@ inputs:
 
   PASS:
     description: 'GPG key password'
-    required: false
-    default: "${{ secrets.PASSWORD }}"
+    required: true
+    default: ''
 
 runs:
   using: 'node12'
