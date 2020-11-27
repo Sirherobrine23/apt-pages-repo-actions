@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/bin/bash
 echo "Por qualquer problema nos informe pela issue no seguinte link: https://github.com/Sirherobrine23/APT-Pages-Docke/issues"
 echo "E Também uma copia do Log"
 
@@ -18,7 +18,7 @@ echo "-------------------------------------------------------"
 if [ -d package ];then
    if [ -e package/*/*.deb ];then
       echo "Copiando os arquivos"
-      cp -rfv ./ /aptly/
+      cp -rfv ./package/. /aptly/package || exit 1
    else
       echo "No deb files"
       exit 129
