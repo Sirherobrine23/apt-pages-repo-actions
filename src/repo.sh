@@ -18,7 +18,7 @@ echo "-------------------------------------------------------"
 if [ -d package ];then
    if [ -e package/*/*.deb ];then
       echo "Copiando os arquivos"
-      cp -rfv ./package/. /aptly/package || exit 1
+      cp -rfv ./package/. /aptly/package || statusONE='0'
    else
       echo "No deb files"
       exit 129
