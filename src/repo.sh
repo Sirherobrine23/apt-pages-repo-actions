@@ -55,6 +55,15 @@ ln -s /aptly/aptly.conf ~/.aptly.conf
 # ------------------------------------------------------
 if [ $statusONE == '1' ];then
  cd /aptly/
+ if [ -d package ];then
+   if [ -e package/*/*.deb ];then
+      echo "confirmation of packages with success"
+   else
+      exit 129
+   fi #end
+ else
+   exit 130
+ fi
      for as in $(ls /aptly/package/)
      do
          aptly repo create -distribution=$INPUT_DIST -component=$as $as
