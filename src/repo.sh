@@ -21,7 +21,7 @@ fi
 
 # Pacotes
 if [ -d package ];then
- echo "Copiando as pastas"
+ echo "linkando os pacotes"
  ln -s $PWD/package /aptly/package
 else
    echo "not found folder"
@@ -60,12 +60,6 @@ ln -s /aptly/aptly.conf ~/.aptly.conf
 # ------------------------------------------------------
 if [ $statusONE == '1' ];then
  cd /aptly/
- if [ -d package ];then
-      echo "confirmation of packages with success"
- else
-   echo "check dirs packages"
-   exit 132
- fi
      for as in $(ls /aptly/package/)
      do
          aptly repo create -distribution=$INPUT_DIST -component=$as $as
