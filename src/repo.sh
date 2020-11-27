@@ -37,9 +37,7 @@ echo "{
   \"FileSystemPublishEndpoints\": {},
   \"S3PublishEndpoints\": {},
   \"SwiftPublishEndpoints\": {}
-}" > /aptly/aptly.conf
-rm -rfv ~/.aptly.conf
-ln -s /aptly/aptly.conf ~/.aptly.conf
+}" > ~/.aptly.conf
 
 # ------------------------------------------------------
 # Import key
@@ -80,7 +78,7 @@ else
 fi
 # ------------------------------------------------------
 if [ $statusTWO == '1' ];then
-    ls aptly/
+    ls .aptly/
     if [ -d aptly/public ];then
         cd aptly/public
     else
