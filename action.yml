@@ -45,7 +45,7 @@ inputs:
 runs:
   using: 'node12'
   pre: 'setup.js'
-  main: 'create_repo.js'
+  main: 'repo.js'
 
 branding:
   icon: 'code'

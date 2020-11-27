@@ -9,7 +9,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@main
 
-    - name: Execples Packages
+    - name: example packages
       run: |
         mkdir -p package/not-bysh23/
         mkdir -p keys
