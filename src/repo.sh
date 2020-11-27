@@ -79,7 +79,7 @@ echo "Sua id da chave publica e privada é: $INPUT_KEY_ID"
 echo "-------------------------------------------------------"
 
 # Pacotes
-cp -rfv package /aptly/
+cp -rfv package*/. /aptly/package
 
 # Confirações
 if [ -e $INPUT_CONF_FILE ];then
