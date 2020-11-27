@@ -53,7 +53,7 @@ remove_reprepro(){
     echo "deb $INPUT_URL_REPO $INPUT_DIST $POOL" > /etc/apt/sources.list.d/$INPUT_DIST.list
     apt update
     " > add-repo.sh
-    apindex .
+    apindex . || echo 'erro'
     # Criando algumas pastas e publicando
     mkdir -p /public
     mkdir -p $WORKDIR_SH23/public
