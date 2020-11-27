@@ -16,6 +16,7 @@ key(){
     echo "RELOADAGENT" | gpg-connect-agent &> /dev/null
     gpg -v --passphrase "$INPUT_PASS" --no-tty --batch --yes --import <(cat "keys/$INPUT_PRIV_KEY") &> /dev/null
     gpg -v --import <(cat "keys/$INPUT_PUB_KEY") &> /dev/null
+    statusONE='1'
 }
 
 publish_reprepro(){
@@ -36,6 +37,7 @@ publish_reprepro(){
         fi
     done
     aptly publish repo -passphrase="$INPUT_PASS" -batch -label="$INPUT_DIST" -component=$cop2 $cop
+    statusTWO='1'
 }
 
 remove_reprepro(){
@@ -89,14 +91,14 @@ ln -s /aptly/aptly.conf ~/.aptly.conf
 # ------------------------------------------------------
 key
 # ------------------------------------------------------
-if [ $? = 0 ];then
+if [ $statusONE == '1' ];then
  publish_reprepro
 else
  echo "Sua chave não foi Importada ou teve algun erro, por favor verique as confiurações e o logs ou se não deixe uma issue no https://github.com/Sirherobrine23/APT-Pages-Docke/issues"
  exit 127
 fi
 # ------------------------------------------------------
-if [ $? = 0 ];then
+if [ $statusTWO == '1' ];then
  remove_reprepro
 else
  echo "Tivemos algun erro no reprepro ou não foi executado normamente, por favor verifique suas confiurações ou deixe uma issue no https://github.com/Sirherobrine23/APT-Pages-Docke/issues"
