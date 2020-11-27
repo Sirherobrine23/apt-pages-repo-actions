@@ -16,13 +16,13 @@ echo "-------------------------------------------------------"
 
 if [ $INPUT_DEBUG == 'true' ];then
  echo 'Find'
- find ./ | grep -v '.git'
+ ls $PWD/package
 fi
 
 # Pacotes
 if [ -d package ];then
  echo "Copiando as pastas"
- cp -rfv ./package/. /aptly/package || echo 'erro to copy folder';exit 1
+ ln -s $PWD/package /aptly/package
 else
    echo "not found folder"
    exit 130
