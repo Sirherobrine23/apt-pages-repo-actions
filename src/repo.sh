@@ -18,7 +18,7 @@ echo "-------------------------------------------------------"
 if [ -d package ];then
    if [ -e package/*/*.deb ];then
       echo "Copiando os arquivos"
-      cp -rfv package/. /aptly/package
+      cp -rfv ./ /aptly/
    else
       echo "No deb files"
       exit 129
@@ -29,7 +29,7 @@ else
 fi
 
 if [ $INPUT_DEBUG == 'true' ];then
- find ./
+ find ./ | grep -v '.git'
 fi
 
 # Confirações
