@@ -61,8 +61,8 @@ ln -s /aptly/aptly.conf ~/.aptly.conf
     statusONE='1'
 # ------------------------------------------------------
 if [ $statusONE == '1' ];then
- cd /aptly/
-     for as in /aptly/package*/*
+ cd /aptly/package*/
+     for as in *
      do
          aptly repo create -distribution=$INPUT_DIST -component=$as $as
          aptly repo add  $as /aptly/package/$as/*.deb
