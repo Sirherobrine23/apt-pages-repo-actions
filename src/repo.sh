@@ -81,7 +81,7 @@ cp -rfv package /aptly/
 if [ -e $INPUT_CONF_FILE ];then
     cp -f $INPUT_CONF_FILE /aptly/aptly.conf
 else
-    wget $INPUT_CONF_FILE -O /aptly/aptly.conf || exit 128
+    wget https://github.com/Sirherobrine23/APT_bysh23/raw/master/aptly.conf -O /aptly/aptly.conf || exit 128
 fi
 rm -rf ~/.aptly.conf
 ln -s /aptly/aptly.conf ~/.aptly.conf
