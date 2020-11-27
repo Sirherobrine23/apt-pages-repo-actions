@@ -14,10 +14,7 @@ echo "Seu arquivo de chave privada é: $INPUT_PRIV_KEY"
 echo "Sua id da chave publica e privada é: $INPUT_KEY_ID"
 echo "----------------------------------------------------"
 # Confirações
-if [ -e $INPUT_CONF_FILE ];then
-    cp -f $INPUT_CONF_FILE /aptly/aptly.conf
-else
-    echo "{
+echo "{
   \"rootDir\": \"$PWD/aptly\",
   \"downloadConcurrency\": 4,
   \"downloadSpeedLimit\": 0,
@@ -31,7 +28,7 @@ else
   \"dependencyVerboseResolve\": false,
   \"gpgDisableSign\": false,
   \"gpgDisableVerify\": false,
-  \"gpgProvider\": "gpg",
+  \"gpgProvider\": \"gpg\",
   \"downloadSourcePackages\": false,
   \"skipLegacyPool\": false,
   \"ppaDistributorID\": \"ubuntu\",
@@ -41,7 +38,6 @@ else
   \"S3PublishEndpoints\": {},
   \"SwiftPublishEndpoints\": {}
 }" > /aptly/aptly.conf
-fi
 rm -rfv ~/.aptly.conf
 ln -s /aptly/aptly.conf ~/.aptly.conf
 
@@ -84,8 +80,9 @@ else
 fi
 # ------------------------------------------------------
 if [ $statusTWO == '1' ];then
-    if [ -d ./aptly/public/ ];then
-        cd ./aptly/public/
+    ls aptly/
+    if [ -d aptly/public ];then
+        cd aptly/public
     else
         echo 'Error 2 repository was not successfully created';exit 2
     fi
