@@ -17,11 +17,14 @@ echo "-------------------------------------------------------"
 # Pacotes
 if [ -d package ];then
    if [ -e package/*/*.deb ];then
-      cp -rfv package*/. /aptly/package
+      echo "Copiando os arquivos"
+      cp -rfv package/. /aptly/package
    else
+      echo "No deb files"
       exit 129
    fi #end
 else
+   echo "not found folder"
    exit 130
 fi
 
@@ -63,10 +66,12 @@ if [ $statusONE == '1' ];then
    if [ -e package/*/*.deb ];then
       echo "confirmation of packages with success"
    else
-      exit 129
+      echo "Check files"
+      exit 131
    fi #end
  else
-   exit 130
+   echo "check dirs packages"
+   exit 132
  fi
      for as in $(ls /aptly/package/)
      do
