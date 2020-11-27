@@ -61,12 +61,7 @@ ln -s /aptly/aptly.conf ~/.aptly.conf
 if [ $statusONE == '1' ];then
  cd /aptly/
  if [ -d package ];then
-   if [ -e package/*/*.deb ];then
       echo "confirmation of packages with success"
-   else
-      echo "Check files"
-      exit 131
-   fi #end
  else
    echo "check dirs packages"
    exit 132
