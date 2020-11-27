@@ -21,13 +21,8 @@ fi
 
 # Pacotes
 if [ -d package ];then
-   if [ -e package/*/*.deb ];then
-      echo "Copiando os arquivos"
-      cp -rfv ./package/. /aptly/package || statusONE='0'
-   else
-      echo "No deb files"
-      exit 129
-   fi #end
+ echo "Copiando as pastas"
+ cp -rfv ./package/. /aptly/package || echo 'erro to copy folder';exit 1
 else
    echo "not found folder"
    exit 130
