@@ -14,4 +14,6 @@ sudo make install
 sudo mkdir -p /aptly
 chown $USER:$GROUP /aptly
 chown 777 /aptly
+chown $USER:$GROUP /aptly/*
+chown 777 /aptly/*
 exit 0

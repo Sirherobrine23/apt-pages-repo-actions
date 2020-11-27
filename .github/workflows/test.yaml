@@ -16,7 +16,6 @@ jobs:
         KEY_ID: '908144B521689A950CCB5E801347937B188623BC'
         URL_REPO: 'https://sirherobrine23.github.io/apt-pages-repo-actions'
         PASS: "${{ secrets.PASSWORD }}"
-        DEBUG: 'true'
     
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3.7.0-8
