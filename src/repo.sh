@@ -88,15 +88,20 @@ if [ $statusTWO == '1' ];then
     # Key
     gpg --armor --output Release.gpg --export $KEY_ID
     # 
+    if echo $INPUT_URL_REPO|grep -q 'http';then
+        repo_url="$INPUT_URL_REPO"
+    else
+        repo_url="https://$GITHUB_REPOSITORY_OWNER.github.io/$(echo $GITHUB_REPOSITORY|sed 's|/|/ |g'|awk '{print $2}')"
+    fi
     POOL="$(ls pool/)"
     KEYGPG="$(cat Release.gpg)"
     echo "#!/bin/sh
     set -x
     echo '$KEYGPG' | apt-key add -
-    echo "deb $INPUT_URL_REPO $INPUT_DIST $POOL" > /etc/apt/sources.list.d/$INPUT_DIST.list
+    echo "deb $repo_url $INPUT_DIST $POOL" > /etc/apt/sources.list.d/$INPUT_DIST.list
     apt update" > add-repo.sh
     sudo apindex .
-    echo "$INPUT_URL_REPO" > CNAME
+    echo "$repo_url" > CNAME
 else
  echo "Tivemos algun erro no reprepro ou não foi executado normamente, por favor verifique suas confiurações ou deixe uma issue no https://github.com/Sirherobrine23/APT-Pages-Docke/issues"
  exit 127
