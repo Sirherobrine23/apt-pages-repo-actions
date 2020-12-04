@@ -11,7 +11,7 @@ echo "A distro selecionada: $INPUT_DIST"
 echo "Opção atual do debug é: $INPUT_DEBUG"
 echo "Seu arquivo de chave publica é: $INPUT_PUB_KEY"
 echo "Seu arquivo de chave privada é: $INPUT_PRIV_KEY"
-echo "Sua id da chave publica e privada é: $INPUT_KEY_ID"
+echo "The $INPUT_KEY_ID entry is unnecessary"
 echo "----------------------------------------------------"
 # Confirações
 echo "{
@@ -52,14 +52,15 @@ else
     chmod 700 "$gpg_folder"
     echo "---------------------------------------"
 fi
-echo "default-key $INPUT_KEY_ID" >> $gpg_folder/gpg.conf
+gpg -v --passphrase "$INPUT_PASS" --no-tty --batch --yes --import <(cat "keys/$INPUT_PRIV_KEY")
+gpg -v --import <(cat "keys/$INPUT_PUB_KEY")
+KEY_ID="$(gpg --list-keys|grep -v 'pub'|grep -v 'uid'|grep -v 'sub'|grep -v '-'|tr '\n' ' ' |sed 's| ||g')"
+echo "default-key $KEY_ID" >> $gpg_folder/gpg.conf
 echo use-agent >> $gpg_folder/gpg.conf
 echo "pinentry-mode loopback" >> $gpg_folder/gpg.conf
 echo "allow-loopback-pinentry" >> $gpg_folder/gpg-agent.conf
 echo "UPDATESTARTUPTTY" | gpg-connect-agent
 echo "RELOADAGENT" | gpg-connect-agent
-gpg -v --passphrase "$INPUT_PASS" --no-tty --batch --yes --import <(cat "keys/$INPUT_PRIV_KEY")
-gpg -v --import <(cat "keys/$INPUT_PUB_KEY")
 echo "Gpg inport key sucess"
 statusONE='1'
 # ------------------------------------------------------
@@ -85,11 +86,12 @@ if [ $statusTWO == '1' ];then
         echo 'Error 2 repository was not successfully created';exit 2
     fi
     # Key
-    gpg --armor --output ./aptly/public/Release.gpg --export $INPUT_KEY_ID
+    gpg --armor --output Release.gpg --export $KEY_ID
     # 
     POOL="$(ls pool/)"
     KEYGPG="$(cat Release.gpg)"
-    echo "#!/bin/bash
+    echo "#!/bin/sh
+    set -x
     echo '$KEYGPG' | apt-key add -
     echo "deb $INPUT_URL_REPO $INPUT_DIST $POOL" > /etc/apt/sources.list.d/$INPUT_DIST.list
     apt update" > add-repo.sh

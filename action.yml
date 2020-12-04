@@ -4,7 +4,7 @@ description: "Create Snapshot images in Github Actions"
 inputs:
   DIST:
     description: 'Name type main'
-    required: false
+    required: true
     default: 'pages'
 
   DEBUG:
@@ -24,13 +24,8 @@ inputs:
 
   KEY_ID:
     description: 'Id da chave (GPG)'
-    required: true
-    default:  ''
-
-  CONF_FILE:
-    description: 'aptly config file'
     required: false
-    default: 'aptly.conf'
+    default:  ''
 
   URL_REPO: 
     description: 'Pages URL'
