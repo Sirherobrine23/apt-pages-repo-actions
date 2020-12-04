@@ -92,6 +92,7 @@ if [ $statusTWO == '1' ];then
         repo_url="$INPUT_URL_REPO"
     else
         repo_url="https://$GITHUB_REPOSITORY_OWNER.github.io/$(echo $GITHUB_REPOSITORY|sed 's|/|/ |g'|awk '{print $2}')"
+        echo "Repository Link: https://$GITHUB_REPOSITORY_OWNER.github.io/$(echo $GITHUB_REPOSITORY|sed 's|/|/ |g'|awk '{print $2}')"
     fi
     POOL="$(ls pool/)"
     KEYGPG="$(cat Release.gpg)"
