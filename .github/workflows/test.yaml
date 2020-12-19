@@ -14,9 +14,3 @@ jobs:
     - uses: Sirherobrine23/apt-pages-repo-actions@main
       with:
         PASS: "${{ secrets.PASSWORD }}"
-    
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3.7.0-8
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: aptly/public/
