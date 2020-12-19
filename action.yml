@@ -2,6 +2,11 @@ name: "Build Openwrt Image in Github CI With Javascript"
 author: "Sirherobrine23"
 description: "Create Snapshot images in Github Actions"
 inputs:
+  STYLE:
+    description: "Debian or Termux folder style"
+    required: false
+    default: "debian"
+
   DIST:
     description: 'Name type main'
     required: true
