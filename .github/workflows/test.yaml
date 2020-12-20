@@ -4,7 +4,7 @@ on: [push]
 jobs:
   Debian:
     runs-on: ubuntu-latest
-    name: Build
+    name: Debian Test
     steps:
     - name: Checkout
       uses: actions/checkout@main
@@ -19,7 +19,7 @@ jobs:
 
   Temux:
     runs-on: ubuntu-latest
-    name: Build
+    name: Termux Test
     steps:
     - name: Checkout
       uses: actions/checkout@main
