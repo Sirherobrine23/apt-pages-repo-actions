@@ -14,3 +14,5 @@ jobs:
     - uses: Sirherobrine23/apt-pages-repo-actions@main
       with:
         PASS: "${{ secrets.PASSWORD }}"
+    - name: List
+      run: find aptly/public/

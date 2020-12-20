@@ -91,16 +91,30 @@ if [ $statusTWO == '1' ];then
     if echo $INPUT_URL_REPO|grep -q 'http';then
         repo_url="$INPUT_URL_REPO"
     else
-        repo_url="https://$GITHUB_REPOSITORY_OWNER.github.io/$(echo $GITHUB_REPOSITORY|sed 's|/|/ |g'|awk '{print $2}')"
+        repo_url="https://$GITHUB_REPOSITORY_OWNER.github.io/$(echo $GITHUB_REPOSITORY| sed "s|$GITHUB_REPOSITORY_OWNER/||g")"
         echo "Repository Link: https://$GITHUB_REPOSITORY_OWNER.github.io/$(echo $GITHUB_REPOSITORY|sed 's|/|/ |g'|awk '{print $2}')"
     fi
     POOL="$(ls pool/)"
     KEYGPG="$(cat Release.gpg)"
-    echo "#!/bin/sh
-    set -x
-    echo '$KEYGPG' | apt-key add -
-    echo "deb $repo_url $INPUT_DIST $POOL" > /etc/apt/sources.list.d/$INPUT_DIST.list
-    apt update" > add-repo.sh
+    if [ $INPUT_STYLE == 'debian' ]
+    then
+        echo -e "#!/bin/sh
+        set -x
+        apt-key add '$KEYGPG'
+        echo deb $repo_url $INPUT_DIST $POOL > /etc/apt/sources.list.d/$INPUT_DIST.list
+        apt update" > add-repo.sh
+    else
+        echo -e "#!/data/data/com.termux/files/usr/bin/bash
+        set -x
+        if command -v /data/data/com.termux/files/usr/bin/bash &> \$TMPDIR/null
+        then
+            apt-key add '$KEYGPG'
+            echo deb $repo_url $INPUT_DIST $POOL > $PREFIX/etc/apt/sources.list.d/$INPUT_DIST.list
+            apt update
+        else
+            echo 'You are not using termux'
+        fi" > add-repo.sh
+    fi
     sudo apindex .
     echo "$repo_url" > CNAME
 else

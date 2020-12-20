@@ -35,7 +35,7 @@ inputs:
   URL_REPO: 
     description: 'Pages URL'
     required: true
-    default: "https://${{ github.repository_owner }}.github.io/${{ github.repository }}"
+    default: ''
 
   PASS:
     description: 'GPG key password'
