@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 echo "Por qualquer problema nos informe pela issue no seguinte link: https://github.com/Sirherobrine23/APT-Pages-Docke/issues"
 echo "E Também uma copia do Log"
 
@@ -65,60 +66,67 @@ echo "Gpg inport key sucess"
 statusONE='1'
 # ------------------------------------------------------
 # Crete repo dists
-if [ $statusONE == '1' ];then
-     for as in $(ls package)
-     do
-        aptly repo create -distribution=$INPUT_DIST -component=$as $as
-        aptly repo add  $as package/$as/*.deb
-        if [ -z $cop ] ;then cop="$as";else cop="$cop $as";fi
-        if [ -z $cop2 ] ;then cop2="$as";else cop2="$cop2,$as";fi
-     done
-     aptly publish repo -passphrase="$INPUT_PASS" -batch -label="$INPUT_DIST" -component=$cop2 $cop && statusTWO='1'
-else
-    echo "Sua chave não foi Importada ou teve algun erro, por favor verique as confiurações e o logs ou se não deixe uma issue no https://github.com/Sirherobrine23/APT-Pages-Docke/issues";exit 127
-fi
+MORE_SCRIPT="$(cat ${INPUT_SCRIPT_ADD})"
+cd package
+for as in *
+do
+    aptly repo create -distribution=$INPUT_DIST -component=$as $as
+    aptly repo add  $as $as/*.deb
+    if [ -z $cop ];then
+        cop="$as";else cop="$cop $as"
+    fi
+    if [ -z $cop2 ];then
+        cop2="$as"
+    else
+        cop2="$cop2,$as"
+    fi
+done
+aptly publish repo -passphrase="$INPUT_PASS" -batch -label="$INPUT_DIST" -component=$cop2 $cop
+cd ../
 # ------------------------------------------------------
-if [ $statusTWO == '1' ];then
-    ls .aptly/
-    if [ -d aptly/public ];then
-        cd aptly/public
-    else
-        echo 'Error 2 repository was not successfully created';exit 2
-    fi
-    # Key
-    gpg --armor --output Release.gpg --export $KEY_ID
-    # 
-    if echo $INPUT_URL_REPO|grep -q 'http';then
-        repo_url="$INPUT_URL_REPO"
-    else
-        repo_url="https://$GITHUB_REPOSITORY_OWNER.github.io/$(echo $GITHUB_REPOSITORY| sed "s|$GITHUB_REPOSITORY_OWNER/||g")"
-        echo "Repository Link: https://$GITHUB_REPOSITORY_OWNER.github.io/$(echo $GITHUB_REPOSITORY|sed 's|/|/ |g'|awk '{print $2}')"
-    fi
-    POOL="$(ls pool/)"
-    KEYGPG="$(cat Release.gpg)"
-    if [ $INPUT_STYLE == 'debian' ]
-    then
-        echo -e "#!/bin/sh
-        set -x
-        apt-key add '$KEYGPG'
-        echo deb $repo_url $INPUT_DIST $POOL > /etc/apt/sources.list.d/$INPUT_DIST.list
-        apt update" > add-repo.sh
-    else
-        echo -e "#!/data/data/com.termux/files/usr/bin/bash
-        set -x
-        if command -v /data/data/com.termux/files/usr/bin/bash &> \$TMPDIR/null
-        then
-            apt-key add '$KEYGPG'
-            echo deb $repo_url $INPUT_DIST $POOL > $PREFIX/etc/apt/sources.list.d/$INPUT_DIST.list
-            apt update
-        else
-            echo 'You are not using termux'
-        fi" > add-repo.sh
-    fi
-    sudo apindex .
-    echo "$repo_url" > CNAME
+ls .aptly/
+if [ -d aptly/public ];then
+    cd aptly/public
 else
- echo "Tivemos algun erro no reprepro ou não foi executado normamente, por favor verifique suas confiurações ou deixe uma issue no https://github.com/Sirherobrine23/APT-Pages-Docke/issues"
- exit 127
+    echo 'Error 2 repository was not successfully created';exit 2
 fi
+# Key
+gpg --armor --output Release.gpg --export $KEY_ID
+# 
+if echo $INPUT_URL_REPO|grep -q 'http';then
+    repo_url="$INPUT_URL_REPO"
+else
+    repo_url="https://$GITHUB_REPOSITORY_OWNER.github.io/$(echo $GITHUB_REPOSITORY| sed "s|$GITHUB_REPOSITORY_OWNER/||g")"
+    echo "Repository Link: https://$GITHUB_REPOSITORY_OWNER.github.io/$(echo $GITHUB_REPOSITORY|sed 's|/|/ |g'|awk '{print $2}')"
+fi
+#
+POOL="$(ls pool/)"
+KEYGPG="$(cat Release.gpg)"
+#
+if [ $INPUT_STYLE == 'debian' ];then
+#
+echo -e "set -x
+echo '$KEYGPG'|apt-key add -
+echo \"deb $repo_url $INPUT_DIST $POOL\" > /etc/apt/sources.list.d/$INPUT_DIST.list
+${MORE_SCRIPT}
+apt update" > add-repo.sh
+#
+else
+#
+echo -e "set -x
+if command -v /data/data/com.termux/files/usr/bin/bash &> \$TMPDIR/null;then
+#
+echo \'$KEYGPG\'|apt-key add -
+echo \"deb $repo_url $INPUT_DIST $POOL\" > $PREFIX/etc/apt/sources.list.d/$INPUT_DIST.list
+${MORE_SCRIPT}
+apt update
+#
+else
+    echo 'You are not using termux'
+    exit 1
+fi" > add-repo.sh
+#
+fi
+sudo apindex .
+echo "$repo_url" > CNAME
 exit 0

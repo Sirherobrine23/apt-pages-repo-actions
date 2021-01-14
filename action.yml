@@ -42,6 +42,10 @@ inputs:
     required: true
     default: ''
 
+  SCRIPT_ADD:
+    description: 'Add more script in add-repo.sh'
+    required: false
+
 runs:
   using: 'node12'
   pre: 'setup.js'
