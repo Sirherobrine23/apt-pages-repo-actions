@@ -78,9 +78,12 @@ do
         cop2="$cop2,$as"
     fi
 done
-set -e
 echo "generating the repository"
-aptly publish repo -passphrase="$INPUT_PASS" -batch -label="$INPUT_DIST" -component=$cop2 $cop &>> /dev/null
+if ! aptly publish repo -passphrase="$INPUT_PASS" -batch -label="$INPUT_DIST" -component=$cop2 $cop;then
+    aptly_erro=$?
+    echo "Aptly exit with code ${aptly_erro}"
+    exit ${aptly_erro}
+fi
 echo "Sucess"
 cd ../
 # ------------------------------------------------------
