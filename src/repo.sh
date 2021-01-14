@@ -42,17 +42,15 @@ echo "{
 
 # ------------------------------------------------------
 # Import key
-if [ -d $gpg_folder ];then
-    echo "You already have a gpg folder, continuing"
-else
-    echo "Pasta do gpg: $gpg_folder"
-    mkdir -p "$gpg_folder"
-    chown -R $(whoami) "$gpg_folder/"
-    chown -R $(whoami) "$gpg_folder"
-    chmod 600 "$gpg_folder/*"
-    chmod 700 "$gpg_folder"
-    echo "---------------------------------------"
-fi
+echo "---------------------------------------"
+echo "Folder for gpg: $gpg_folder"
+sudo mkdir -p "$gpg_folder"
+sudo chown -R $(whoami) "$gpg_folder/"
+sudo chmod 600 "$gpg_folder/*"
+sudo chmod 700 "$gpg_folder"
+echo "---------------------------------------"
+
+echo "Adding the keys"
 gpg -v --passphrase "$INPUT_PASS" --no-tty --batch --yes --import <(cat "keys/$INPUT_PRIV_KEY")
 gpg -v --import <(cat "keys/$INPUT_PUB_KEY")
 KEY_ID="$(gpg --list-keys|grep -v 'pub'|grep -v 'uid'|grep -v 'sub'|grep -v '-'|tr '\n' ' ' |sed 's| ||g')"
@@ -63,17 +61,17 @@ echo "allow-loopback-pinentry" >> $gpg_folder/gpg-agent.conf
 echo "UPDATESTARTUPTTY" | gpg-connect-agent
 echo "RELOADAGENT" | gpg-connect-agent
 echo "Gpg inport key sucess"
-statusONE='1'
 # ------------------------------------------------------
 # Crete repo dists
-MORE_SCRIPT="$(cat ${INPUT_SCRIPT_ADD})"
 cd package
 for as in *
 do
     aptly repo create -distribution=$INPUT_DIST -component=$as $as
-    aptly repo add  $as $as/*.deb
+    aptly repo add ${as} $as/*.deb
     if [ -z $cop ];then
-        cop="$as";else cop="$cop $as"
+        cop="$as"
+    else
+        cop="$cop $as"
     fi
     if [ -z $cop2 ];then
         cop2="$as"
@@ -84,7 +82,7 @@ done
 aptly publish repo -passphrase="$INPUT_PASS" -batch -label="$INPUT_DIST" -component=$cop2 $cop
 cd ../
 # ------------------------------------------------------
-ls .aptly/
+MORE_SCRIPT="$(cat ${INPUT_SCRIPT_ADD})"
 if [ -d aptly/public ];then
     cd aptly/public
 else
