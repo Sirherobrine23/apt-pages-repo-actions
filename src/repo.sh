@@ -132,5 +132,7 @@ fi" > add-repo.sh
 #
 fi
 apindex .
-echo "$repo_url" > CNAME
+if ! echo "$repo_url"|grep -q '.github.io/';then
+    echo "$repo_url" > CNAME
+fi
 exit 0
