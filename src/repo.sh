@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 echo "Por qualquer problema nos informe pela issue no seguinte link: https://github.com/Sirherobrine23/APT-Pages-Docke/issues"
 echo "E Também uma copia do Log"
 
@@ -49,7 +48,7 @@ sudo chown -R $(whoami) "$gpg_folder/"
 sudo chmod 600 "$gpg_folder/*"
 sudo chmod 700 "$gpg_folder"
 echo "---------------------------------------"
-
+set -e
 echo "Adding the keys"
 gpg -v --passphrase "$INPUT_PASS" --no-tty --batch --yes --import <(cat "keys/$INPUT_PRIV_KEY")
 gpg -v --import <(cat "keys/$INPUT_PUB_KEY")
