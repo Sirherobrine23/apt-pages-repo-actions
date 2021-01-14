@@ -48,7 +48,6 @@ sudo chown -R $(whoami) "$gpg_folder/"
 sudo chmod 600 "$gpg_folder/*"
 sudo chmod 700 "$gpg_folder"
 echo "---------------------------------------"
-set -e
 echo "Adding the keys"
 gpg -v --passphrase "$INPUT_PASS" --no-tty --batch --yes --import <(cat "keys/$INPUT_PRIV_KEY")
 gpg -v --import <(cat "keys/$INPUT_PUB_KEY")
@@ -79,6 +78,7 @@ do
         cop2="$cop2,$as"
     fi
 done
+set -e
 echo "generating the repository"
 aptly publish repo -passphrase="$INPUT_PASS" -batch -label="$INPUT_DIST" -component=$cop2 $cop &>> /dev/null
 echo "Sucess"
