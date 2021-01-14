@@ -3,7 +3,7 @@ FROM ubuntu:latest
 USER root
 RUN apt update 
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt install git sudo -y
+RUN apt install git -y
 
 # Copia o arquivo de código do repositório de ação para o caminho do sistema de arquivos `/` do contêiner
 COPY src/ /intallers/

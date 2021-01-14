@@ -43,10 +43,10 @@ echo "{
 # Import key
 echo "---------------------------------------"
 echo "Folder for gpg: $gpg_folder"
-sudo mkdir -p "$gpg_folder"
-sudo chown -R $(whoami) "$gpg_folder/"
-sudo chmod 600 "$gpg_folder/*"
-sudo chmod 700 "$gpg_folder"
+mkdir -p "$gpg_folder"
+chown -R $(whoami) "$gpg_folder/"
+chmod 600 "$gpg_folder/*"
+chmod 700 "$gpg_folder"
 echo "---------------------------------------"
 echo "Adding the keys"
 gpg -v --passphrase "$INPUT_PASS" --no-tty --batch --yes --import <(cat "keys/$INPUT_PRIV_KEY")
@@ -128,6 +128,6 @@ else
 fi" > add-repo.sh
 #
 fi
-sudo apindex .
+apindex .
 echo "$repo_url" > CNAME
 exit 0
