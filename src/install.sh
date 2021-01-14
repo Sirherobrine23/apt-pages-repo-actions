@@ -1,5 +1,6 @@
 #!/bin/env bash
 sudo apt update
+export DEBIAN_FRONTEND=noninteractive
 sudo apt install -y gnupg wget git curl screen ubuntu-server dos2unix cmake make
 wget https://github.com/aptly-dev/aptly/releases/download/v1.4.0/aptly_1.4.0_amd64.deb -O /tmp/aptly.deb 
 sudo dpkg -i /tmp/aptly.deb
