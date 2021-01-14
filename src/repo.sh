@@ -63,10 +63,11 @@ echo "Gpg inport key sucess"
 # ------------------------------------------------------
 # Crete repo dists
 cd package
+echo "Adding files to the repository pool"
 for as in *
 do
-    aptly repo create -distribution=$INPUT_DIST -component=$as $as
-    aptly repo add ${as} $as/*.deb
+    aptly repo create -distribution=$INPUT_DIST -component=${as} ${as}
+    aptly repo add ${as} ${as}/*.deb
     if [ -z $cop ];then
         cop="$as"
     else
@@ -78,14 +79,17 @@ do
         cop2="$cop2,$as"
     fi
 done
-aptly publish repo -passphrase="$INPUT_PASS" -batch -label="$INPUT_DIST" -component=$cop2 $cop
+echo "generating the repository"
+aptly publish repo -passphrase="$INPUT_PASS" -batch -label="$INPUT_DIST" -component=$cop2 $cop &>> /dev/null
+echo "Sucess"
 cd ../
 # ------------------------------------------------------
 MORE_SCRIPT="$(cat ${INPUT_SCRIPT_ADD})"
 if [ -d aptly/public ];then
     cd aptly/public
 else
-    echo 'Error 2 repository was not successfully created';exit 2
+    echo 'Error 2 repository was not successfully created'
+    exit 2
 fi
 # Key
 gpg --armor --output Release.gpg --export $KEY_ID
